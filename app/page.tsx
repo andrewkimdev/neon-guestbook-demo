@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { addEntry } from "./actions";
+import { FormattedDate } from "./components/FormattedDate";
 
 export default async function Home() {
   const entries = await prisma.entry.findMany({
@@ -10,7 +11,7 @@ export default async function Home() {
     <main className="min-h-screen bg-black p-4 font-mono text-green-400 sm:p-8">
       <div className="mx-auto max-w-2xl">
         <h1 className="mb-8 text-center text-3xl font-bold tracking-wider text-[#39ff14] sm:text-4xl">
-          NEON GUESTBOOK
+          네온 방명록
         </h1>
 
         <form
@@ -18,8 +19,8 @@ export default async function Home() {
           className="mb-8 border border-[#39ff14] bg-black p-4 shadow-[0_0_10px_#39ff14] sm:p-6"
         >
           <div className="mb-4">
-            <label htmlFor="name" className="mb-2 block text-sm uppercase tracking-wide">
-              Name
+            <label htmlFor="name" className="mb-2 block text-sm tracking-wide">
+              이름
             </label>
             <input
               type="text"
@@ -27,13 +28,13 @@ export default async function Home() {
               name="name"
               required
               className="w-full border border-[#39ff14] bg-black p-2 text-[#39ff14] placeholder-green-800 outline-none focus:shadow-[0_0_5px_#39ff14]"
-              placeholder="Enter your name..."
+              placeholder="이름을 입력하세요..."
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="message" className="mb-2 block text-sm uppercase tracking-wide">
-              Message
+            <label htmlFor="message" className="mb-2 block text-sm tracking-wide">
+              메시지
             </label>
             <textarea
               id="message"
@@ -41,21 +42,21 @@ export default async function Home() {
               required
               rows={3}
               className="w-full resize-none border border-[#39ff14] bg-black p-2 text-[#39ff14] placeholder-green-800 outline-none focus:shadow-[0_0_5px_#39ff14]"
-              placeholder="Leave your message..."
+              placeholder="메시지를 남겨주세요..."
             />
           </div>
 
           <button
             type="submit"
-            className="w-full border border-[#39ff14] bg-[#39ff14] px-4 py-2 font-bold uppercase tracking-wider text-black transition-all hover:bg-black hover:text-[#39ff14] hover:shadow-[0_0_10px_#39ff14]"
+            className="w-full border border-[#39ff14] bg-[#39ff14] px-4 py-2 font-bold tracking-wider text-black transition-all hover:bg-black hover:text-[#39ff14] hover:shadow-[0_0_10px_#39ff14]"
           >
-            Sign Guestbook
+            방명록 작성
           </button>
         </form>
 
         <div className="space-y-4">
           {entries.length === 0 ? (
-            <p className="text-center text-green-600">No entries yet. Be the first to sign!</p>
+            <p className="text-center text-green-600">아직 작성된 글이 없습니다. 첫 번째로 작성해 보세요!</p>
           ) : (
             entries.map((entry) => (
               <div
@@ -65,13 +66,7 @@ export default async function Home() {
                 <div className="mb-2 flex flex-col justify-between gap-1 sm:flex-row sm:items-center">
                   <span className="font-bold text-[#39ff14]">{entry.name}</span>
                   <span className="text-xs text-green-600">
-                    {entry.createdAt.toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    <FormattedDate date={entry.createdAt} />
                   </span>
                 </div>
                 <p className="text-green-300">{entry.message}</p>
