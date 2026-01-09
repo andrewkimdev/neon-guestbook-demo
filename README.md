@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Neon Guestbook Demo
+
+A "hello world" full-stack web app built entirely in GitHub Codespaces with Claude Code. This project demonstrates how quickly you can scaffold a working web application using AI-assisted development.
+
+## What It Does
+
+A simple guestbook where visitors can leave their name and a message. Entries are stored in a PostgreSQL database and displayed in reverse chronological order. The UI features a retro neon/cyberpunk aesthetic with Korean labels.
+
+## Tech Stack
+
+- **Next.js 16** - App Router with Server Actions
+- **Prisma 7** - ORM with driver adapters
+- **Neon** - Serverless PostgreSQL
+- **Tailwind CSS 4** - Styling
 
 ## Getting Started
 
-First, run the development server:
+1. Set up your database connection:
+   ```bash
+   # Create a .env file with your Neon database URL
+   DATABASE_URL="postgresql://..."
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+2. Initialize the database:
+   ```bash
+   npx prisma db push
+   ```
+
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open http://localhost:3000 (or use the Codespaces port forwarding)
+
+## Project Structure
+
+```
+app/
+  page.tsx        # Main guestbook page
+  actions.ts      # Server action for form submission
+  components/     # UI components
+lib/
+  prisma.ts       # Database client singleton
+prisma/
+  schema.prisma   # Database schema
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## One-Shot Prompt
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The following prompt can be used to regenerate this project from scratch with Claude Code:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+Create a Next.js 16 guestbook app with the following:
 
-## Learn More
+Tech stack:
+- Next.js 16 with App Router and Turbopack
+- Prisma 7 with @prisma/adapter-pg driver adapter
+- PostgreSQL via Neon (DATABASE_URL env var)
+- Tailwind CSS 4
 
-To learn more about Next.js, take a look at the following resources:
+Database schema:
+- Single "Entry" model with: id (autoincrement), name (string), message (string), createdAt (datetime)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Features:
+- Server component page that fetches all entries ordered by newest first
+- Server action to add new entries with basic validation
+- Form with name and message inputs
+- Display entries as cards showing name, message, and formatted date
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Styling:
+- Neon/cyberpunk aesthetic: black background (#000000), neon green (#39ff14)
+- Monospace font throughout
+- Glow effects on borders and text (box-shadow with the green color)
+- Korean UI labels ("네온 방명록" for title, "이름" for name, "메시지" for message, etc.)
 
-## Deploy on Vercel
+Project structure:
+- app/page.tsx - main page
+- app/actions.ts - server action for form submission
+- app/components/FormattedDate.tsx - client component for date formatting
+- lib/prisma.ts - Prisma client singleton for hot-reload safety
+- Generate Prisma client to app/generated/prisma/
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Keep it simple - this is a demo, not production code.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Note
+
+This is a demo project for showcasing the GitHub Codespaces + Claude Code development workflow. It intentionally keeps things simple and is not production-ready.
